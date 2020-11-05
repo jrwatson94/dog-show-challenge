@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchAllDogs()
     const dogTableBody = document.querySelector("#table-body")
+    
+    //variables for Edit Dog Form
+    const dogFormName = document.querySelector("input[name=name]")
+    const dogFormBreed = document.querySelector("input[name=breed]")
+    const dogFormSex = document.querySelector("input[name=sex]")
+    const submitButton = document.querySelector("#dog-form")
 
     //fetch all dogs
     function fetchAllDogs() {
@@ -11,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+    //render dogs to page
     const renderDogs = dogs => {
         dogTableBody.innerHTML = ""
         dogs.forEach(dog =>{
@@ -30,7 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
             dogTableBody.append(dogRow)
         })
     }
+    
+    //Prefill fields of Edit Form with clicked dog info
+    const addDogToDogForm = dog => {
+        dogFormName.value = dog.name
+        dogFormBreed.value = dog.breed
+        dogFormSex.value = dog.sex
+        submitButton.id = dog.id
+    }
 
+    
+    /* Event Handlers */
+
+    //dog table
     dogTableBody.addEventListener("click", event => {
         if (event.target.innerText === "Edit Dog") {
             //fetch dog that has been selected for edit
@@ -41,21 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             })
         }
     })
-
-    //variables for Edit Dog Form
-    const dogFormName = document.querySelector("input[name=name]")
-    const dogFormBreed = document.querySelector("input[name=breed]")
-    const dogFormSex = document.querySelector("input[name=sex]")
-    // const submitButton = document.querySelector("input[type=submit]")
-    const submitButton = document.querySelector("#dog-form")
-
-
-    const addDogToDogForm = dog => {
-        dogFormName.value = dog.name
-        dogFormBreed.value = dog.breed
-        dogFormSex.value = dog.sex
-        submitButton.id = dog.id
-    }
+    
+    //edit form submit button
     submitButton.addEventListener("submit", event => {
         //patch dog
         event.preventDefault()
@@ -75,11 +81,5 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(() => {
             fetchAllDogs()
         })        
-
-        
     })
-
-    
-
-    
 })
